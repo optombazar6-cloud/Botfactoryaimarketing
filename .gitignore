@@ -1,0 +1,15 @@
+.env
+attached_assets/
+__pycache__/
+*.pyc
+client_secret.json
+client_secret*.json
+logs/
+output/
+output_docker/
+telegram_output/
+test_botfactory_leads.xlsx
+test_email_preview.html
+botfactory_leads.xlsx
+leads.xlsx
+data/
