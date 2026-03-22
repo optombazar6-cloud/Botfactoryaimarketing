@@ -39,7 +39,7 @@ async def main_async(config: AppConfig, console: Console) -> None:
         Panel.fit(
             f"Mode: {config.mode}\n"
             f"Leads file: {config.leads_file}\n"
-            f"Seed URL: {config.seed_url or '-'}\n"
+            f"Seed URLs: {', '.join(config.seed_urls) or '-'}\n"
             f"Priority filter: {'on' if config.filter_priority_categories else 'off'}\n"
             f"MX validation: {'on' if config.validate_email_mx else 'off'}\n"
             f"Warm-up mode: {'on' if config.warm_up_mode else 'off'}\n"
@@ -74,7 +74,7 @@ async def run_scrape_phase(config: AppConfig, console: Console) -> ScrapePhaseRe
     from goldenpages_scraper.scraper import GoldenPagesScraper, ScraperSettings
     console.print("[bold cyan]Scrape phase started[/bold cyan]")
     settings = ScraperSettings(
-        seed_urls=[config.seed_url or ""],
+        seed_urls=config.seed_urls,
         max_companies=config.max_companies,
         max_pages_per_seed=config.max_pages_per_seed,
         output_dir=config.scraper_output_dir,
@@ -105,7 +105,7 @@ async def run_scrape_phase(config: AppConfig, console: Console) -> ScrapePhaseRe
         config.logs_dir,
         "scrape",
         {
-            "seed_url": config.seed_url,
+            "seed_urls": config.seed_urls,
             "total_scraped_rows": result.total_scraped_rows,
             "rows_with_email": result.rows_with_email,
             "targeted_valid_rows": result.targeted_valid_rows,

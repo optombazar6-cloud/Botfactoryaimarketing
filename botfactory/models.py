@@ -53,7 +53,7 @@ class GoogleSheetsConfig:
 @dataclass(slots=True)
 class AppConfig:
     mode: str
-    seed_url: str | None
+    seed_urls: list[str]
     leads_file: Path
     template_file: Path
     logs_dir: Path

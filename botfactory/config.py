@@ -72,7 +72,8 @@ def email_transport_label(config: SMTPConfig) -> str:
 def build_config(args: argparse.Namespace) -> AppConfig:
     from botfactory.email_compose import normalize_language
 
-    seed_url = collapse_whitespace(args.seed_url or getenv_str("SCRAPE_SEED_URL", ""))
+    seed_urls_raw = args.seed_url or getenv_str("SCRAPE_SEED_URL", "")
+    seed_urls = [collapse_whitespace(u) for u in seed_urls_raw.split(",") if collapse_whitespace(u)]
     leads_file = args.leads_file or Path(getenv_str("LEADS_FILE", "botfactory_leads.xlsx"))
     template_file = args.template_file or Path(getenv_str("TEMPLATE_FILE", "template.html"))
     scraper_output_dir = Path(getenv_str("SCRAPER_OUTPUT_DIR", "output"))
@@ -110,7 +111,7 @@ def build_config(args: argparse.Namespace) -> AppConfig:
     )
     sender_email = getenv_str("EMAIL_SENDER_EMAIL", getenv_str("GMAIL_EMAIL", ""))
 
-    if args.mode in {"scrape", "all"} and not seed_url:
+    if args.mode in {"scrape", "all"} and not seed_urls:
         raise ValueError("SCRAPE_SEED_URL is missing. Set it in .env or pass --seed-url.")
     if delay_min_seconds < 0 or delay_max_seconds < 0 or delay_min_seconds > delay_max_seconds:
         raise ValueError("Email delay values are invalid.")
@@ -179,7 +180,7 @@ def build_config(args: argparse.Namespace) -> AppConfig:
         )
     return AppConfig(
         mode=args.mode,
-        seed_url=seed_url or None,
+        seed_urls=seed_urls,
         leads_file=leads_file,
         template_file=template_file,
         logs_dir=logs_dir,
