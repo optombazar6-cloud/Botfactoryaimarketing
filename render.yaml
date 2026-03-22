@@ -58,7 +58,7 @@ services:
       - key: OUTREACH_LANGUAGE
         value: uz
       - key: FILTER_PRIORITY_CATEGORIES
-        value: true
+        value: false
       - key: VALIDATE_EMAIL_MX
         value: true
       - key: LOGS_DIR
